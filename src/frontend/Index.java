@@ -2,29 +2,36 @@ package frontend;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.GridLayout;
+import java.util.List;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import model.Prueba;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class Index extends JFrame {
+public class Index extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
-	private JTextField editCantidad;
 	private JTextField editSemilla;
 	private JTable table;
+	private Prueba p;
+	private JLabel textGenerar;
+	private JButton buttonStart;
+	private JTextField editCantidad;
 
 	/**
 	 * Launch the application.
@@ -57,12 +64,13 @@ public class Index extends JFrame {
 		contentPane.add(panel, BorderLayout.WEST);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JLabel lblIngresaLaSemilla = new JLabel("Ingresa la semilla");
+		JLabel lblIngresaLaSemilla = new JLabel("Ingresa la semilla (de 3, 4 o 5 dígitos)");
 		lblIngresaLaSemilla.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIngresaLaSemilla.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel.add(lblIngresaLaSemilla);
 		
 		editSemilla = new JTextField();
+		editSemilla.addActionListener(this);
 		editSemilla.setBorder(new LineBorder(new Color(155, 38, 182)));
 		editSemilla.setHorizontalAlignment(SwingConstants.CENTER);
 		editSemilla.setFont(new Font("Tahoma", Font.PLAIN, 22));
@@ -74,21 +82,23 @@ public class Index extends JFrame {
 		lblValoresATomar.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panel.add(lblValoresATomar);
 		
-		JLabel label = new JLabel("4");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(label);
+		editCantidad = new JTextField();
+		editCantidad.addActionListener(this);
+		editCantidad.setHorizontalAlignment(SwingConstants.CENTER);
+		editCantidad.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		editCantidad.setBorder(new LineBorder(new Color(115, 38, 182)));
+		panel.add(editCantidad);
+		editCantidad.setColumns(10);
 		
 		JLabel lblCantidadDeNmeros = new JLabel("Cantidad de números a generar:");
 		lblCantidadDeNmeros.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblCantidadDeNmeros.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblCantidadDeNmeros);
 		
-		editCantidad = new JTextField();
-		editCantidad.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		editCantidad.setBorder(new LineBorder(new Color(155, 38, 182)));
-		panel.add(editCantidad);
-		editCantidad.setColumns(10);
+		textGenerar = new JLabel("");
+		textGenerar.setHorizontalAlignment(SwingConstants.CENTER);
+		textGenerar.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		panel.add(textGenerar);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(158, 38, 182));
@@ -103,20 +113,50 @@ public class Index extends JFrame {
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		
 		table = new JTable();
+		table.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		scrollPane.setViewportView(table);
+		
+		JPanel panel_2 = new JPanel();
+		contentPane.add(panel_2, BorderLayout.SOUTH);
+		
+		buttonStart = new JButton("Start");
+		buttonStart.addActionListener(this);
+		buttonStart.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		panel_2.add(buttonStart);
+		p = new Prueba();
 	}
 	
-	public void mostrarResurtidos() {
-		String[] titulos = {"n", "Semilla 1", "Semilla 2", "Resultado", "Número tomado", "Número aleatorio"};
+//	public void mostrarLista(long mainSeed, String k) {
+//		List<Long> list = p.generador(mainSeed, k);
+//		showNumbers(list);
+//	}
+//	
+//	public void showNumbers(List<Long> list) {
+//		String[] titulos = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+//
+//		DefaultTableModel modelo = new DefaultTableModel(titulos, 0);
+//		int count = 0;
+//		for(int i = 0; i < 10; i++) {
+//			String[] tupla = new String[10];
+//			for(int j = 0; j < 10; j++) {
+//				tupla[j] = String.valueOf(list.get(count));
+//				count++;
+//			}
+//			modelo.addRow(tupla);
+//		}
+//		table.setModel(modelo);
+//	}
 
-		DefaultTableModel modelo = new DefaultTableModel(titulos, 0);
-
-		/*for (Resurtir resurtir : resurtidos) {
-			String[] tupla = {tabla.nombreProducto(resurtir.getCodigoProducto()), String.valueOf(resurtir.getFechaResurtido()), 
-					String.valueOf(resurtir.getCantidadResurtirda()), String.valueOf(resurtir.getPrecioUnidad()),
-					String.valueOf(resurtir.getFechaCaducidad())};
-			modelo.addRow(tupla);
-		}*/
-		table.setModel(modelo);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == editSemilla) {
+			editCantidad.requestFocus();
+		}
+		
+//		if(e.getSource() == editCantidad) {
+//			textGenerar.setText("100");
+//			buttonStart.requestFocus();
+//			mostrarLista(Long.valueOf(editSemilla.getText()), editCantidad.getText());
+//		}
 	}
 }
